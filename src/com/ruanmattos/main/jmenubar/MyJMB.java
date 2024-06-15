@@ -122,7 +122,7 @@ public class MyJMB extends JMenuBar {
                 if (verificaEstoque()) {
                     jfnv = new JFNovaVenda(this, null);
                     isJFNovaVendaOpen = true;
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(this, "Você não pode iniciar uma nova venda não tendo produto no estoque!", "Nova Venda", JOptionPane.WARNING_MESSAGE);
                 }
             }

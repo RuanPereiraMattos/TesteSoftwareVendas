@@ -3,19 +3,16 @@ package com.ruanmattos.main.grouplayout.jframe;
 //<editor-fold defaultstate="collapsed" desc="Imports">
 import com.ruanmattos.main.database.MySQL;
 import com.ruanmattos.main.jframe.JFNovoCliente;
-import com.ruanmattos.main.jinternalframe.JIFClientes;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import static javax.swing.GroupLayout.DEFAULT_SIZE;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 //</editor-fold>
 
@@ -132,74 +129,85 @@ public class JFNovoClienteGroupLayout extends GroupLayout implements ActionListe
 
     //<editor-fold defaultstate="collapsed" desc="cadastrar">
     private void cadastrar() {
-        /*String sql = "insert into clientes (";
-        if (!nomeTxt.getText().isBlank()) {
-        sql += "nome";
-        } else {
-        JOptionPane.showMessageDialog(
-        jfnc,
-        "Não é possível cadastrar um usuário SEM nome",
-        "Ops, você deve preencher no mínimo o nome do cliente!",
-        JOptionPane.WARNING_MESSAGE);
-        return;
-        }
-        if (!cpfTxt.getText().isBlank()) {
-        if (!nomeTxt.getText().isBlank()) {
-        sql += ", cpf";
-        } else {
-        JOptionPane.showMessageDialog(
-        jfnc,
-        "Não é possível cadastrar um usuário somente com CPF!",
-        "Ops, você deve preencher o nome do cliente",
-        JOptionPane.WARNING_MESSAGE);
-        }
-        }
-        if (telefoneTxt.getText().isBlank() || telefoneTxt.getText().length() != 15) {
-        JOptionPane.showMessageDialog(
-        jfnc,
-        "Você deve informar o telefone no seguinte formato (xx) 12345-1234",
-        "Telefone incorreto",
-        JOptionPane.WARNING_MESSAGE);
-        return;
-        }
-        if (!nomeTxt.getText().isBlank()) {
-        sql += ", telefone";
-        } else {
-        JOptionPane.showMessageDialog(
-        jfnc,
-        "Não é possível cadastrar um usuário somente com telefone!",
-        "Ops, você deve preencher o nome do cliente",
-        JOptionPane.WARNING_MESSAGE);
-        }*/
-        if (!nomeTxt.getText().isBlank() && !cpfTxt.getText().isBlank() && !telefoneTxt.getText().isBlank() && telefoneTxt.getText().length() == 15) {
-            try {
-                if (mySQL == null) {
-                    mySQL = new MySQL();
+        String sql = "insert into clientes ";
+        if (!nomeTxt.getText().isBlank() && !cpfTxt.getText().isBlank() && !telefoneTxt.getText().isBlank()) {//Todos os campos contém algo
+            if (cpfTxt.getText().length() != 11 && telefoneTxt.getText().length() != 15) {//CPF e Telefone estão com os campos formatados incorretamente
+                if (cpfTxt.getText().length() != 11) {//CPF está formatado incorretamente
+                    JOptionPane.showMessageDialog(
+                            jfnc,
+                            "Você deve preencher corretamente o campo CPF:\nExemplo: xxxxxxxxxxx",
+                            "Campo CPF preenchido de maneira errada",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                } else {//Telefone está formatado incorretamente
+                    JOptionPane.showMessageDialog(
+                            jfnc,
+                            "Você deve preencher corretamente o campo telefone:\nExemplo: (xx) xxxxx-xxxx",
+                            "Campo Telefone preenchido de maneira errada",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
                 }
-                String sql = "insert into clientes (nome, telefone, cpf) values (?, ?, ?)";
-                mySQL.ps = mySQL.conn.prepareStatement(sql);
-                mySQL.ps.setString(1, nomeTxt.getText());
-                mySQL.ps.setString(2, telefoneTxt.getText());
-                mySQL.ps.setString(3, cpfTxt.getText());
-                mySQL.ps.execute();
-                mySQL.ps.close();
-                mySQL.conn.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(JIFClientes.class.getName()).log(Level.SEVERE, null, ex);
+            } else {//CPF ou Telefone estão com os campos formatados incorretamente
+                if (cpfTxt.getText().length() != 11) {//Somente CPF está formatado incorretamente
+                    JOptionPane.showMessageDialog(
+                            jfnc, 
+                            "Você deve preencher corretamente o campo CPF:\nExemplo: xxxxxxxxxxx", 
+                            "Campo CPF preenchido de maneira errada", 
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                if (telefoneTxt.getText().length() != 15) {//Somente Telefone está formatado incorretamente
+                    JOptionPane.showMessageDialog(
+                            jfnc, 
+                            "Você deve preencher corretamente o campo telefone:\nExemplo: (xx) xxxxx-xxxx", 
+                            "Campo Telefone preenchido de maneira errada", 
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            }
+            if (mySQL == null) {
+                mySQL = new MySQL();
+            }
+            sql += " (nome, cpf, telefone) values (\"" + nomeTxt.getText() + "\", \"" + cpfTxt.getText() + "\", \"" + telefoneTxt.getText() + "\")";
+            if (mySQL.insert(sql, "Não foi possível gravar o usuário novo no banco de dados, tente novamente!", jfnc) == -1) {
+                return;
+            }
+            JOptionPane.showMessageDialog(jfnc, "Cliente:\nNome: " + nomeTxt.getText() + "\nCPF: " + cpfTxt.getText() + "\nTelefone: " + telefoneTxt.getText() + "\nCadastrado(a) com sucesso");
+        } else if (!nomeTxt.getText().isBlank() && !cpfTxt.getText().isBlank()) {
+            if (cpfTxt.getText().length() != 11) {
+                JOptionPane.showMessageDialog(jfnc, "Você deve preencher corretamente o campo CPF");
+                return;
+            }
+            if (mySQL == null) {
+                mySQL = new MySQL();
+            }
+            sql += " (nome, cpf) values (\"" + nomeTxt.getText() + "\", \"" + cpfTxt.getText() + "\")";
+            if (mySQL.insert(sql, "Não foi possível gravar o usuário novo no banco de dados, tente novamente!", jfnc) == 1) {
+                JOptionPane.showMessageDialog(jfnc, "Cliente:\nNome: " + nomeTxt.getText() + "\nCPF: " + cpfTxt.getText() + "\nCadastrado(a) com sucesso");
+            }
+        } else if (!nomeTxt.getText().isBlank() && !telefoneTxt.getText().isBlank()) {
+            if (telefoneTxt.getText().length() != 15) {
+                JOptionPane.showMessageDialog(jfnc, "Você deve preencher corretamente o campo telefone");
+                return;
+            }
+            if (mySQL == null) {
+                mySQL = new MySQL();
+            }
+            sql += " (nome, telefone) values (\"" + nomeTxt.getText() + "\", \"" + telefoneTxt.getText() + "\")";
+            if (mySQL.insert(sql, "Não foi possível gravar o usuário novo no banco de dados, tente novamente!", jfnc) == 1) {
+                JOptionPane.showMessageDialog(jfnc, "Cliente:\nNome: " + nomeTxt.getText() + "\nTelefone: " + telefoneTxt.getText() + "\nCadastrado(a) com sucesso");
             }
         } else if (!nomeTxt.getText().isBlank()) {
-            try {
-                if (mySQL == null) {
-                    mySQL = new MySQL();
-                }
-                mySQL.ps = mySQL.conn.prepareStatement("insert into clientes(nome) value (?)");
-                mySQL.ps.setString(1, nomeTxt.getText());
-                mySQL.ps.execute();
-                mySQL.ps.close();
-                mySQL.conn.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(JIFClientes.class.getName()).log(Level.SEVERE, null, ex);
+            if (mySQL == null) {
+                mySQL = new MySQL();
             }
+            sql += " (nome) value (\"" + nomeTxt.getText() + "\")";
+            if (mySQL.insert(sql, "Não foi possível gravar o usuário novo no banco de dados, tente novamente!", jfnc) == 1) {
+                JOptionPane.showMessageDialog(jfnc, "Cliente:\nNome: " + nomeTxt.getText() + "\nCadastrado(a) com sucesso");
+            }
+        } else {
+            JOptionPane.showMessageDialog(jfnc, "Você precisa preencher no mínimo o nome do cliente para poder proceguir com o cadastro!");
+            return;
         }
         if (jfnc.getJifcgl() != null) {
             jfnc.getJifcgl().getJifc().getMyJMB().getJfm().setVisible(true);
