@@ -135,32 +135,26 @@ public class JFNovoClienteGroupLayout extends GroupLayout implements ActionListe
                 if (cpfTxt.getText().length() != 11) {//CPF está formatado incorretamente
                     JOptionPane.showMessageDialog(
                             jfnc,
-                            "Você deve preencher corretamente o campo CPF:\nExemplo: xxxxxxxxxxx",
-                            "Campo CPF preenchido de maneira errada",
-                            JOptionPane.WARNING_MESSAGE);
-                    return;
-                } else {//Telefone está formatado incorretamente
-                    JOptionPane.showMessageDialog(
-                            jfnc,
-                            "Você deve preencher corretamente o campo telefone:\nExemplo: (xx) xxxxx-xxxx",
-                            "Campo Telefone preenchido de maneira errada",
+                            "Você deve preencher corretamente o campo CPF:\nExemplo: 12345678912\n"
+                            + "Você deve preencher corretamente o campo telefone:\nExemplo: (xx) xxxxx-xxxx",
+                            "Campo CPF e Telefone preenchidos de maneira errada",
                             JOptionPane.WARNING_MESSAGE);
                     return;
                 }
             } else {//CPF ou Telefone estão com os campos formatados incorretamente
                 if (cpfTxt.getText().length() != 11) {//Somente CPF está formatado incorretamente
                     JOptionPane.showMessageDialog(
-                            jfnc, 
-                            "Você deve preencher corretamente o campo CPF:\nExemplo: xxxxxxxxxxx", 
-                            "Campo CPF preenchido de maneira errada", 
+                            jfnc,
+                            "Você deve preencher corretamente o campo CPF:\nExemplo: xxxxxxxxxxx",
+                            "Campo CPF preenchido de maneira errada",
                             JOptionPane.WARNING_MESSAGE);
                     return;
                 }
                 if (telefoneTxt.getText().length() != 15) {//Somente Telefone está formatado incorretamente
                     JOptionPane.showMessageDialog(
-                            jfnc, 
-                            "Você deve preencher corretamente o campo telefone:\nExemplo: (xx) xxxxx-xxxx", 
-                            "Campo Telefone preenchido de maneira errada", 
+                            jfnc,
+                            "Você deve preencher corretamente o campo telefone:\nExemplo: (xx) xxxxx-xxxx",
+                            "Campo Telefone preenchido de maneira errada",
                             JOptionPane.WARNING_MESSAGE);
                     return;
                 }
@@ -175,7 +169,11 @@ public class JFNovoClienteGroupLayout extends GroupLayout implements ActionListe
             JOptionPane.showMessageDialog(jfnc, "Cliente:\nNome: " + nomeTxt.getText() + "\nCPF: " + cpfTxt.getText() + "\nTelefone: " + telefoneTxt.getText() + "\nCadastrado(a) com sucesso");
         } else if (!nomeTxt.getText().isBlank() && !cpfTxt.getText().isBlank()) {
             if (cpfTxt.getText().length() != 11) {
-                JOptionPane.showMessageDialog(jfnc, "Você deve preencher corretamente o campo CPF");
+                JOptionPane.showMessageDialog(
+                            jfnc,
+                            "Você deve preencher corretamente o campo CPF:\nExemplo: xxxxxxxxxxx",
+                            "Campo CPF preenchido de maneira errada",
+                            JOptionPane.WARNING_MESSAGE);
                 return;
             }
             if (mySQL == null) {
@@ -187,7 +185,11 @@ public class JFNovoClienteGroupLayout extends GroupLayout implements ActionListe
             }
         } else if (!nomeTxt.getText().isBlank() && !telefoneTxt.getText().isBlank()) {
             if (telefoneTxt.getText().length() != 15) {
-                JOptionPane.showMessageDialog(jfnc, "Você deve preencher corretamente o campo telefone");
+                JOptionPane.showMessageDialog(
+                            jfnc,
+                            "Você deve preencher corretamente o campo telefone:\nExemplo: (xx) xxxxx-xxxx",
+                            "Campo Telefone preenchido de maneira errada",
+                            JOptionPane.WARNING_MESSAGE);
                 return;
             }
             if (mySQL == null) {
