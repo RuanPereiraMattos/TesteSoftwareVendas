@@ -153,18 +153,6 @@ public class JFNovoProdutoGroupLayout extends GroupLayout implements ActionListe
 
     //<editor-fold defaultstate="collapsed" desc="cadastrar">
     private void cadastrar() {
-        /*if (!canCadastrate) {
-        JOptionPane.showMessageDialog(jfnp, "Ocorreu algum erro, feche o software e abra novamente!", "Ops!", JOptionPane.ERROR_MESSAGE);
-        if (jfnp.getMyJMB() != null) {
-        jfnp.getMyJMB().setJFNovoProdutoFalse();
-        jfnp.getMyJMB().getJfm().setVisible(true);
-        } else if (jfnp.getJifpgl() != null) {
-        jfnp.getJifpgl().getJifp().getMyJMB().setJFNovoProdutoFalse();
-        jfnp.getJifpgl().getJifp().getMyJMB().getJfm().setVisible(true);
-        jfnp.getJifpgl().atualiza();
-        }
-        jfnp.dispose();
-        }*/
         if (!nomeTxt.getText().isBlank() && !descricaoTxt.getText().isBlank() && !valorTxt.getText().isBlank()) {
             try {
                 if (mySQL == null) {
