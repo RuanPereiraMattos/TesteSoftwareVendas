@@ -74,11 +74,11 @@ public class MySQL {
                 executeUpdate = ps.executeUpdate();
                 ps.close();
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(cmp, exception);
+                JOptionPane.showMessageDialog(cmp, exception + "\n" + ex);
                 Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return executeUpdate;
     }
-
+    
 }
